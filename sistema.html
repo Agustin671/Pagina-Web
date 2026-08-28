@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloud Computing - Sistema</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="logo-container">
+        <img src="santotomas.png" alt="Logo Santo Tomás" class="logo">
+    </div>
+
+    <h1>Cloud Computing</h1>
+
+    <h2>Mi primer sistema Cloud</h2>
+
+    <p>
+        Sistema creado en la asignatura Computación en la Nube del Instituto Profesional Santo Tomás
+    </p>
+
+    <hr style="margin: 20px 0;">
+
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 30px;">
+        <input type="text" id="inputNombre" placeholder="Nombre completo" style="padding: 8px; width: 250px;">
+        <input type="text" id="inputRut" placeholder="RUT (ej: 12.345.678-9)" style="padding: 8px; width: 250px;">
+        <input type="number" id="inputEdad" placeholder="Edad" style="padding: 8px; width: 250px;">
+        <input type="email" id="inputCorreo" placeholder="Correo electrónico" style="padding: 8px; width: 250px;">
+        <input type="tel" id="inputTelefono" placeholder="Teléfono" style="padding: 8px; width: 250px;">
+
+        <button onclick="guardarDato()" style="margin-top: 10px;">Guardar en LocalStorage</button>
+    </div>
+
+    <table border="1" style="margin: 0 auto; width: 90%; text-align: center; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>RUT</th>
+                <th>Edad</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
