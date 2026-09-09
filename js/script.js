@@ -37,10 +37,10 @@ function guardarEnSheet() {
         console.error("Error al enviar a Sheets:", error);
     });
 
-    guardarDato(); 
+    guardarDato('Sheets');
 }
 
-function guardarDato() {
+function guardarDato(origen = 'Local') {
     const nombre = document.getElementById("inputNombre").value;
     const rut = document.getElementById("inputRut").value;
     const edad = document.getElementById("inputEdad").value;
@@ -55,13 +55,12 @@ function guardarDato() {
     let datosGuardados = JSON.parse(localStorage.getItem("datosAlumnosST")) || [];
 
     if (indiceEdicion === -1) {
-        datosGuardados.push({ nombre, rut, edad, correo, telefono });
+        datosGuardados.push({ origen: origen, nombre: nombre, rut: rut, edad: edad, correo: correo, telefono: telefono });
     } else {
-        datosGuardados[indiceEdicion] = { nombre, rut, edad, correo, telefono };
+        datosGuardados[indiceEdicion] = { origen: origen, nombre: nombre, rut: rut, edad: edad, correo: correo, telefono: telefono };
         indiceEdicion = -1;
         document.getElementById("btnGuardar").textContent = "Guardar en LocalStorage";
     }
-
     localStorage.setItem("datosAlumnosST", JSON.stringify(datosGuardados));
 
     document.getElementById("inputNombre").value = "";
@@ -81,8 +80,11 @@ function cargarTabla() {
 
     datosGuardados.forEach(function(registro, index) {
         let fila = document.createElement("tr");
+
+        let textoOrigen = registro.origen === 'Sheets' ? '☁️ Sheets' : '💻 Local';
         
         fila.innerHTML = `
+            <td><strong>${textoOrigen}</strong></td>
             <td>${registro.nombre}</td>
             <td>${registro.rut}</td>
             <td>${registro.edad}</td>
