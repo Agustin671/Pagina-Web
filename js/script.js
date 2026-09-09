@@ -11,8 +11,7 @@ function guardarEnSheet() {
     const correo = document.getElementById("inputCorreo").value;
     const telefono = document.getElementById("inputTelefono").value;
 
-    if (nombre === "" || rut === "" || edad === "" || correo === "" || telefono === "") {
-        alert("Por favor, llena todos los campos antes de guardar.");
+    if (!validarDatos(nombre, rut, edad, correo, telefono)) {
         return;
     }
 
@@ -121,4 +120,24 @@ function editarDato(index) {
 
     indiceEdicion = index;
     document.getElementById("btnGuardar").textContent = "Actualizar Registro";
+}
+function validarDatos(nombre, rut, edad, correo, telefono) {
+    if (nombre.trim() === "" || rut.trim() === "" || edad === "" || correo.trim() === "" || telefono.trim() === "") {
+        alert("⚠️ Por favor, llena todos los campos antes de guardar.");
+        return false;
+    }
+    if (isNaN(edad) || edad <= 0 || edad > 120) {
+        alert("⚠️ Error: La edad debe ser un número válido mayor a 0.");
+        return false;
+    }
+    const regexNumeros = /^[0-9]+$/;
+    if (!regexNumeros.test(telefono)) {
+        alert("⚠️ Error: El teléfono solo puede contener números (sin espacios ni letras).");
+        return false;
+    }
+    if (!correo.includes("@") || !correo.includes(".")) {
+        alert("⚠️ Error: Por favor, ingresa un correo electrónico válido.");
+        return false;
+    }
+    return true; 
 }
