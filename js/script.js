@@ -1,8 +1,60 @@
 const URL_GOOGLE_SHEET = "https://script.google.com/macros/s/AKfycbzqi5fPFdooBAqTeYEek5YL2uReT2rbtR0dQvmxj-iTJq35BrZ79JziJRGdep22LROU/exec";
 
-let indiceEdicion = -1; 
+let indiceEdicion = -1;
 
 document.addEventListener("DOMContentLoaded", cargarTabla);
+
+function formatearRut(input) {
+    let rut = input.value.replace(/[^0-9kK]/g, '').toUpperCase();
+    
+    if (rut.length <= 1) {
+        input.value = rut;
+        return;
+    }
+
+    const cuerpo = rut.slice(0, -1);
+    const dv = rut.slice(-1);
+
+    let cuerpoFormateado = "";
+    for (let i = cuerpo.length - 1, j = 1; i >= 0; i--, j++) {
+        cuerpoFormateado = cuerpo.charAt(i) + cuerpoFormateado;
+        if (j % 3 === 0 && i !== 0) {
+            cuerpoFormateado = "." + cuerpoFormateado;
+        }
+    }
+
+    input.value = cuerpoFormateado + "-" + dv;
+}
+
+function validarDatos(nombre, rut, edad, correo, telefono) {
+    if (nombre.trim() === "" || rut.trim() === "" || edad === "" || correo.trim() === "" || telefono.trim() === "") {
+        alert("⚠️ Por favor, llena todos los campos antes de guardar.");
+        return false;
+    }
+
+    if (rut.length < 11) {
+        alert("⚠️ Error: El RUT ingresado está incompleto.");
+        return false;
+    }
+
+    if (isNaN(edad) || edad <= 0 || edad > 120) {
+        alert("⚠️ Error: La edad debe ser un número válido mayor a 0.");
+        return false;
+    }
+
+    if (telefono.length !== 9) {
+        alert("⚠️ Error: El teléfono debe tener exactamente 9 números.");
+        return false;
+    }
+
+    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regexCorreo.test(correo)) {
+        alert("⚠️ Error: Por favor, ingresa un correo electrónico válido (ej: usuario@correo.com).");
+        return false;
+    }
+
+    return true; 
+}
 
 function guardarEnSheet() {
     const nombre = document.getElementById("inputNombre").value;
@@ -46,8 +98,7 @@ function guardarDato(origen = 'Local') {
     const correo = document.getElementById("inputCorreo").value;
     const telefono = document.getElementById("inputTelefono").value;
 
-    if (nombre === "" || rut === "" || edad === "" || correo === "" || telefono === "") {
-        alert("Por favor, llena todos los campos antes de guardar.");
+    if (!validarDatos(nombre, rut, edad, correo, telefono)) {
         return;
     }
 
@@ -60,6 +111,7 @@ function guardarDato(origen = 'Local') {
         indiceEdicion = -1;
         document.getElementById("btnGuardar").textContent = "Guardar en LocalStorage";
     }
+    
     localStorage.setItem("datosAlumnosST", JSON.stringify(datosGuardados));
 
     document.getElementById("inputNombre").value = "";
@@ -120,24 +172,4 @@ function editarDato(index) {
 
     indiceEdicion = index;
     document.getElementById("btnGuardar").textContent = "Actualizar Registro";
-}
-function validarDatos(nombre, rut, edad, correo, telefono) {
-    if (nombre.trim() === "" || rut.trim() === "" || edad === "" || correo.trim() === "" || telefono.trim() === "") {
-        alert("⚠️ Por favor, llena todos los campos antes de guardar.");
-        return false;
-    }
-    if (isNaN(edad) || edad <= 0 || edad > 120) {
-        alert("⚠️ Error: La edad debe ser un número válido mayor a 0.");
-        return false;
-    }
-    const regexNumeros = /^[0-9]+$/;
-    if (!regexNumeros.test(telefono)) {
-        alert("⚠️ Error: El teléfono solo puede contener números (sin espacios ni letras).");
-        return false;
-    }
-    if (!correo.includes("@") || !correo.includes(".")) {
-        alert("⚠️ Error: Por favor, ingresa un correo electrónico válido.");
-        return false;
-    }
-    return true; 
 }
