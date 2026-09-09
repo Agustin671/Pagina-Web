@@ -24,13 +24,16 @@
 
     <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 30px;">
         <input type="text" id="inputNombre" placeholder="Nombre completo" style="padding: 8px; width: 250px;">
-        <input type="text" id="inputRut" placeholder="RUT (ej: 12.345.678-9)" style="padding: 8px; width: 250px;">
-        <input type="number" id="inputEdad" placeholder="Edad" style="padding: 8px; width: 250px;">
+        
+        <input type="text" id="inputRut" placeholder="RUT (ej: 12.345.678-9)" maxlength="12" oninput="formatearRut(this)" style="padding: 8px; width: 250px;">
+        
+        <input type="number" id="inputEdad" placeholder="Edad" min="1" max="120" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="padding: 8px; width: 250px;">
+        
         <input type="email" id="inputCorreo" placeholder="Correo electrónico" style="padding: 8px; width: 250px;">
-        <input type="tel" id="inputTelefono" placeholder="Teléfono" style="padding: 8px; width: 250px;">
+        
+        <input type="tel" id="inputTelefono" placeholder="Teléfono (ej: 988923232)" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="padding: 8px; width: 250px;">
 
         <button id="btnGuardar" onclick="guardarDato('Local')" style="margin-top: 10px;">Guardar en LocalStorage</button>
-
         <button id="btnGuardarSheet" onclick="guardarEnSheet()" style="margin-top: 10px; background-color: #0f9d58; color: white; border: none; padding: 10px; cursor: pointer;">Guardar y Enviar a Google Sheets</button>
     </div>
 
